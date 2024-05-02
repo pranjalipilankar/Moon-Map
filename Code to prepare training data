@@ -1,0 +1,75 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/pranjalipilankar/Moon_Mapping_STAC/blob/main/Code%20to%20prepare%20training%20data\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "8iwQobXdtOxs"
+      },
+      "outputs": [],
+      "source": [
+        "from PIL import Image\n",
+        "\n",
+        "def resize_image(image_path, output_path, size=(64, 64)):\n",
+        "  \"\"\"\n",
+        "  Resizes an image to the specified size while maintaining aspect ratio.\n",
+        "\n",
+        "  Args:\n",
+        "      image_path: Path to the input image file.\n",
+        "      output_path: Path to save the resized image.\n",
+        "      size: Desired output size as a tuple (width, height). Defaults to (64, 64).\n",
+        "  \"\"\"\n",
+        "  try:\n",
+        "    img = Image.open(image_path)\n",
+        "    width, height = img.size\n",
+        "    aspect_ratio = width / height\n",
+        "\n",
+        "    # Maintain aspect ratio\n",
+        "    if aspect_ratio > 1:\n",
+        "      new_width = size[0]\n",
+        "      new_height = int(size[0] / aspect_ratio)\n",
+        "    else:\n",
+        "      new_height = size[1]\n",
+        "      new_width = int(size[1] * aspect_ratio)\n",
+        "\n",
+        "    resized_img = img.resize((new_width, new_height), Image.ANTIALIAS)  # Use antialiasing for better quality\n",
+        "    resized_img.thumbnail(size, Image.LANCZOS)  # Resize to fit within the target size while preserving quality\n",
+        "\n",
+        "    resized_img.save(output_path)\n",
+        "    print(f\"Image resized to {size} and saved to {output_path}\")\n",
+        "  except Exception as e:\n",
+        "    print(f\"Error resizing image: {e}\")\n",
+        "\n",
+        "# Example usage\n",
+        "image_path = \"path/to/your/image.jpg\"\n",
+        "output_path = \"resized_image.jpg\"\n",
+        "resize_image(image_path, output_path)\n"
+      ]
+    }
+  ]
+}
